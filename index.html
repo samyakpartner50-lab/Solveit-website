@@ -351,6 +351,27 @@
             // Scroll to the new card
             newCard.scrollIntoView({ behavior: 'smooth' });
         });
+        // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAdI54lXYF4clVpxtVqVuSPJfWuFhI3e_w",
+  authDomain: "solve-it-856e9.firebaseapp.com",
+  projectId: "solve-it-856e9",
+  storageBucket: "solve-it-856e9.firebasestorage.app",
+  messagingSenderId: "71473201440",
+  appId: "1:71473201440:web:461a9139bc5954df02d745",
+  measurementId: "G-5BCFB1K85D"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
     </script>
 </body>
 </html>
