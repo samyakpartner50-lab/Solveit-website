@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolveIt - Discuss Problems & Solutions</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-light: #6b7280;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .input-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Feed Section */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .problem-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+            transition: transform 0.2s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .problem-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-desc {
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Solution Section */
+        .solution-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none; /* Hidden by default */
+        }
+
+        .solution-box.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .solution-title {
+            color: var(--success);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">SolveIt.</a>
+        <button class="btn" onclick="scrollToForm()">+ New Problem</button>
+    </header>
+
+    <div class="container">
+        
+        <!-- Input Form -->
+        <section class="input-section" id="new-problem-form">
+            <h2>Discuss a Problem</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Post a challenge you are facing. The community will provide solutions.</p>
+            
+            <form id="problemForm">
+                <div class="form-group">
+                    <label for="title">Problem Title</label>
+                    <input type="text" id="title" placeholder="e.g., My website layout is broken on mobile" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option value="Tech">Technology</option>
+                        <option value="Life">Life Hacks</option>
+                        <option value="Business">Business</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Describe the Problem</label>
+                    <textarea id="description" placeholder="Explain the issue in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">Post Problem</button>
+            </form>
+        </section>
+
+        <!-- Feed -->
+        <div class="feed-header">
+            <h3>Recent Discussions</h3>
+            <span style="color: var(--text-light);">3 Active Threads</span>
+        </div>
+
+        <div id="feed">
+            <!-- Example Problem 1 -->
+            <div class="problem-card">
+                <div class="card-meta">
+                    <span>📂 Technology • 2 hours ago</span>
+                    <span>👤 User123</span>
+                </div>
+                <div class="problem-title">How to center a div vertically?</div>
+                <div class="problem-desc">I have a container with a child element, but I can't get the child to sit perfectly in the middle of the screen vertically. I've tried margin: auto but it's not working.</div>
+                
+                <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution</button>
+                
+                <div class="solution-box">
+                    <div class="solution-title">✅ Solution Provided</div>
+                    <p>Use Flexbox! Set the container to <code>display: flex;</code> and add <code>justify-content: center;</code> and <code>align-items: center;</code>.</p>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                        <strong>Discussion:</strong> <em>Thanks! That worked perfectly.</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Problem 2 -->
+            <div class="problem-card">
+                <div class="card-meta">
+                    <span>📂 Life Hacks • 5 hours ago</span>
+                    <span>👤 GreenThumb</span>
+                </div>
+                <div class="problem-title">My succulent is turning yellow and mushy.</div>
+                <div class="problem-desc">I water it once a week, but the leaves are getting soft and yellow. Is it a disease or just overwatering?</div>
+                
+                <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution</button>
+                
+                <div class="solution-box">
+                    <div class="solution-title">✅ Solution Provided</div>
+                    <p>It is definitely overwatering. Succulents need dry soil between waterings. Stop watering immediately and check if the pot has drainage holes.</p>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                        <strong>Discussion:</strong> <em>I'll let it dry out for a week and see if it recovers.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2023 SolveIt Platform. Discuss. Solve. Grow.</p>
+    </footer>
+
+    <script>
+        // Function to scroll to the form
+        function scrollToForm() {
+            document.getElementById('new-problem-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Function to toggle solution visibility
+        function toggleSolution(btn) {
+            const solutionBox = btn.nextElementSibling;
+            
+            if (solutionBox.style.display === "block") {
+                solutionBox.style.display = "none";
+                btn.textContent = "Show Solution";
+            } else {
+                solutionBox.style.display = "block";
+                btn.textContent = "Hide Solution";
+            }
+        }
+
+        // Handle Form Submission
+        document.getElementById('problemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get values
+            const title = document.getElementById('title').value;
+            const category = document.getElementById('category').value;
+            const desc = document.getElementById('description').value;
+            const time = "Just now";
+
+            // Create new card HTML
+            const newCard = document.createElement('div');
+            newCard.className = 'problem-card';
+            newCard.innerHTML = `
+                <div class="card-meta">
+                    <span>📂 ${category} • ${time}</span>
+                    <span>👤 You</span>
+                </div>
+                <div class="problem-title">${title}</div>
+                <div class="problem-desc">${desc}</div>
+                
+                <button class="toggle-btn" onclick="toggleSolution(this)">Show Solution</button>
+                
+                <div class="solution-box">
+                    <div class="solution-title">✅ Solution Provided</div>
+                    <p><strong>General Advice:</strong> This is a great problem to discuss. Usually, the best approach is to break the problem down into smaller parts and tackle them one by one.</p>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                        <strong>Discussion:</strong> <em>Thanks for the advice!</em>
+                    </div>
+                </div>
+            `;
+
+            // Add to feed
+            const feed = document.getElementById('feed');
+            feed.prepend(newCard);
+
+            // Reset form
+            document.getElementById('problemForm').reset();
+            
+            // Scroll to the new card
+            newCard.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
